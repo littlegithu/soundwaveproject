@@ -543,6 +543,48 @@ Naiboi and more</p>
       </main>
     </div>
   </div>
+  <div id="player-bar" style="
+    display:none;
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#181818;
+    padding:12px 24px;
+    border-top:1px solid #282828;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+">
+    
+    <!-- LEFT -->
+    <div style="display:flex; align-items:center; gap:15px; width:30%;">
+        <img id="p-img" src="" alt="cover" style="width:50px; height:50px; border-radius:4px;">
+        <div>
+            <h4 id="p-title" style="margin:0; font-size:14px; color:white;">Song Title</h4>
+            <p id="p-artist" style="margin:0; font-size:12px; color:#b3b3b3;">Artist</p>
+        </div>
+    </div>
+
+    <!-- CENTER -->
+    <div style="color:white; font-size:20px; display:flex; gap:25px; align-items:center;">
+        <i class="fa-solid fa-shuffle"></i>
+        <i class="fa-solid fa-backward-step"></i>
+        <i class="fa-solid fa-circle-play" id="masterPlay" style="cursor:pointer;"></i>
+        <i class="fa-solid fa-forward-step"></i>
+        <i class="fa-solid fa-repeat"></i>
+    </div>
+
+    <!-- RIGHT -->
+    <div style="width:30%; display:flex; justify-content:flex-end; align-items:center; color:#b3b3b3; gap:15px;">
+        <i class="fa-solid fa-volume-high"></i>
+        <div style="width:100px; height:4px; background:#4d4d4d; border-radius:2px; position:relative;">
+            <div id="volume-bar" style="width:50%; height:100%; background:#1db954; border-radius:2px;"></div>
+        </div>
+    </div>
+
+</div>
 
   <script src="script.js"></script>
 </body>

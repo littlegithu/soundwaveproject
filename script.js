@@ -3,31 +3,28 @@ const resultsSection = document.getElementById('search-results-section');
 const resultsGrid = document.getElementById('search-results-grid');
 const audioPlayer = new Audio();
 
-async function searchSongs() {
+function searchSongs() {
     const query = searchInput.value.trim();
     if (!query) return;
 
     resultsSection.style.display = "block";
-    resultsGrid.innerHTML = "<p style='padding:20px;'>Searching for tunes...</p>";
+    resultsGrid.innerHTML = "<p style='padding: 20px;'>Searching for tunes...</p>";
+    resultsSection.scrollIntoView({ behavior: 'smooth' });
 
-    try {
-        const response = await fetch(
-            `https://cors-anywhere.herokuapp.com/https://api.deezer.com/search?q=${encodeURIComponent(query)}`
-        );
-
-        const data = await response.json();
-
-        if (data.data && data.data.length > 0) {
-            displayResults(data.data);
-        } else {
-            resultsGrid.innerHTML = "<p style='padding:20px;'>No songs found.</p>";
-        }
-
-    } catch (error) {
-        console.error(error);
-        resultsGrid.innerHTML = "<p style='padding:20px;'>Error fetching songs.</p>";
-    }
+    const script = document.createElement('script');
+    script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&output=jsonp&callback=handleSearchResponse`;
+    
+    document.body.appendChild(script);
+    script.onload = () => script.remove();
 }
+
+window.handleSearchResponse = function(data) {
+    if (data && data.data && data.data.length > 0) {
+        displayResults(data.data);
+    } else {
+        resultsGrid.innerHTML = "<p style='padding: 20px;'>No songs found. Try another search!</p>";
+    }
+};
 
 function displayResults(songs) {
     resultsGrid.innerHTML = "";
@@ -36,7 +33,7 @@ function displayResults(songs) {
         const card = document.createElement('div');
         card.className = 'song-card';
 
-        card.onclick = () => playSong(song.preview);
+        card.onclick = () => playSong(song.preview, song);
 
         card.innerHTML = `
             <div class="album-wrapper">
@@ -51,36 +48,37 @@ function displayResults(songs) {
     });
 }
 
-function playSong(url) {
-    if (!url) return alert("Preview not available");
+function playSong(url, song) {
+    if (!url) {
+        alert("Preview not available");
+        return;
+    }
 
-    audioPlayer.pause();
     audioPlayer.src = url;
     audioPlayer.play();
 
-    showNowPlaying();
+    const playerBar = document.getElementById('player-bar');
+    playerBar.style.display = 'flex';
+
+    document.getElementById('p-img').src = song.album.cover_medium;
+    document.getElementById('p-title').innerText = song.title;
+    document.getElementById('p-artist').innerText = song.artist.name;
+
+    document.getElementById('masterPlay').classList.remove('fa-circle-play');
+    document.getElementById('masterPlay').classList.add('fa-circle-pause');
 }
 
-function showNowPlaying() {
-    let bar = document.getElementById("nowPlaying");
-
-    if (!bar) {
-        bar = document.createElement("div");
-        bar.id = "nowPlaying";
-        bar.style.position = "fixed";
-        bar.style.bottom = "0";
-        bar.style.left = "0";
-        bar.style.right = "0";
-        bar.style.background = "#111";
-        bar.style.color = "white";
-        bar.style.padding = "10px";
-        bar.style.textAlign = "center";
-        document.body.appendChild(bar);
+document.getElementById('masterPlay').addEventListener('click', () => {
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        document.getElementById('masterPlay').classList.remove('fa-circle-play');
+        document.getElementById('masterPlay').classList.add('fa-circle-pause');
+    } else {
+        audioPlayer.pause();
+        document.getElementById('masterPlay').classList.remove('fa-circle-pause');
+        document.getElementById('masterPlay').classList.add('fa-circle-play');
     }
-
-    bar.style.display = "block";
-    bar.textContent = "Now Playing 🎵";
-}
+});
 
 function closeSearch() {
     resultsSection.style.display = "none";
@@ -88,16 +86,23 @@ function closeSearch() {
     audioPlayer.pause();
 }
 
+function togglePlay(element) {
+    const artistName = element.querySelector('p').innerText;
+    searchInput.value = artistName;
+    searchSongs();
+}
+
+document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') searchSongs();
 });
 
 function handleSignIn() {
-    alert("Coming soon!");
-}
-
-function togglePlay(card) {
-    const artist = card.innerText;
-    searchInput.value = artist;
-    searchSongs();
+    alert("Sign In coming soon!");
 }
