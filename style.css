@@ -455,3 +455,59 @@ main {
 .fa-magnifying-glass {
   cursor: pointer;
 }
+
+.play-btn, .play-overlay {
+  background: linear-gradient(135deg, #1cc8d1 0%, #005f73 100%);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.artist-card:hover .play-btn {
+  transform: translate(-50%, -50%) scale(1.1);
+  opacity: 1;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 30%;
+  justify-content: flex-end;
+  padding-right: 60px;
+}
+
+#volumeSlider {
+  width: 100px;
+  cursor: pointer;
+  accent-color: #1a84b8;
+}
+
+#volumeSlider {
+  -webkit-appearance: none;
+  appearance: none; /* For compatibility */
+  width: 100px;
+  height: 5px;
+  border-radius: 5px;
+  background: #282828; /* Starts dark */
+  outline: none;
+  cursor: pointer;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
