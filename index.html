@@ -3,579 +3,288 @@
 <head>
   <meta charset="UTF-8">
   <title>SoundWave</title>
+  <!-- Link to external CSS file for main styles -->
   <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome 6 icons (play, heart, volume, etc.) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* ADDITIONAL STYLES for playlist & liked song items (not in external style.css) */
+    .playlist-item, .liked-song-item {
+      background: #1e1e1e;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .playlist-item strong, .liked-song-item strong {
+      color: white;
+    }
+    .playlist-item button, .liked-song-item button {
+      background: #333;
+      border: none;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .playlist-item button:hover, .liked-song-item button:hover {
+      background: #1db954;  /* Spotify green on hover */
+    }
+    /* Style for section header buttons (Refresh, Close, etc.) */
+    .section-header button {
+      background: transparent;
+      border: 1px solid #b3b3b3;
+      color: #b3b3b3;
+      padding: 5px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .section-header button:hover {
+      border-color: white;
+      color: white;
+    }
+    /* Like button in player bar */
+    #likeBtn {
+      cursor: pointer;
+      font-size: 20px;
+      transition: 0.2s;
+    }
+    #likeBtn:hover {
+      color: #1db954;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <div class="left-section">
-      <img src="Assets/image_df0d0550-removebg-preview.png" alt="Logo" class="logo">
-    </div>
-
-    <div class="center-group">
-      <div class="home-btn">
-        <i class="fa-solid fa-house"></i>
-      </div>
-      <div class="search-container">
-  <i class="fa-solid fa-magnifying-glass" onclick="searchSongs()"></i>
-  <input type="text" id="searchInput" placeholder="What do you want to play?">
-  <div class="divider"></div>
-  <i class="fa-solid fa-briefcase"></i>
-</div>
-    </div>
-
-    <div class="right-section">
-      <div class="user-profile">
-        <i class="fa-solid fa-circle-user"></i>
-      </div>
-      <button onclick="handleSignIn()" class="tracks-btn">Sign In</button>
-    </div>
-  </header>
-
-  <div class="main-layout">
-    <aside class="sidebar">
-      <div class="sidebar-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <span>Search</span>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-plus"></i>
-        <span>Create Playlist</span>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-heart"></i>
-        <span>Liked Songs</span>
-      </div>
-    </aside>
-
-    <div class="main-content-wrapper">
-      <main id="mainContent">
-        <section id="search-results-section" style="display: none;">
-  <div class="section-header">
-    <h2>Search Results</h2>
-    <button class="see-all" onclick="closeSearch()">Close</button>
+<!-- =============================== -->
+<!-- HEADER: Logo, Search, Sign In   -->
+<!-- =============================== -->
+<header>
+  <div class="left-section">
+    <img src="Assets/image_df0d0550-removebg-preview.png" alt="Logo" class="logo">
   </div>
-  <div class="trending-row" id="search-results-grid">
-    <!-- Results will appear here -->
+  <div class="center-group">
+    <div class="home-btn">
+      <i class="fa-solid fa-house"></i>
+    </div>
+    <div class="search-container">
+      <!-- Magnifying glass icon triggers searchSongs() -->
+      <i class="fa-solid fa-magnifying-glass" onclick="searchSongs()"></i>
+      <input type="text" id="searchInput" placeholder="What do you want to play?">
+      <div class="divider"></div>
+      <i class="fa-solid fa-briefcase"></i>
+    </div>
   </div>
-</section>
+  <div class="right-section">
+    <div class="user-profile">
+      <i class="fa-solid fa-circle-user"></i>
+    </div>
+    <button onclick="handleSignIn()" class="tracks-btn">Sign In</button>
+  </div>
+</header>
 
-        <section class="artist-section">
-          <div class="section-header">
-            <h2>Hot Artists</h2>
-            <button class="see-all">SEE ALL</button>
+<!-- =============================== -->
+<!-- MAIN LAYOUT: Sidebar + Content -->
+<!-- =============================== -->
+<div class="main-layout">
+  <!-- SIDEBAR navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-item active" onclick="scrollToHome()">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </div>
+    <div class="sidebar-item" onclick="scrollToSearch()">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Search</span>
+    </div>
+    <!-- CREATE PLAYLIST: calls createPlaylist() (POST request) -->
+    <div class="sidebar-item" onclick="createPlaylist()">
+      <i class="fa-solid fa-plus"></i>
+      <span>Create Playlist</span>
+    </div>
+    <!-- LIKED SONGS: shows liked songs section -->
+    <div class="sidebar-item" onclick="showLikedSongs()">
+      <i class="fa-solid fa-heart"></i>
+      <span>Liked Songs</span>
+    </div>
+    <!-- MY PLAYLISTS: opens the playlists section (if closed) -->
+    <div class="sidebar-item" onclick="showPlaylistsSection()">
+      <i class="fa-solid fa-list"></i>
+      <span>My Playlists</span>
+    </div>
+  </aside>
+
+  <div class="main-content-wrapper">
+    <main id="mainContent">
+      <!-- =============================== -->
+      <!-- SEARCH RESULTS SECTION (hidden initially) -->
+      <!-- =============================== -->
+      <section id="search-results-section" style="display: none;">
+        <div class="section-header">
+          <h2>Search Results</h2>
+          <button class="see-all" onclick="closeSearch()">Close</button>
+        </div>
+        <div class="trending-row" id="search-results-grid"></div>
+      </section>
+
+      <!-- =============================== -->
+      <!-- HOT ARTISTS SECTION (static list) -->
+      <!-- =============================== -->
+      <section class="artist-section">
+        <div class="section-header"><h2>Hot Artists</h2><button class="see-all">SEE ALL</button></div>
+        <div class="artist-row">
+          <!-- Each artist card: onclick="togglePlay(this)" searches for that artist -->
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Toxic Lyrikali.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Toxic Lyrikali</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/LilGithu.png" alt="Artist"><div class="play-btn">▶</div></div><p>Lil Githu</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Buruklyn.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Buruklyn Boyz</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Only.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Only Moh</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Mauru.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Mauru Gwash</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Jones.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Khaligraph Jones</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Wakadinali.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Wakadinali</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Central-Cee.png" alt="Artist"><div class="play-btn">▶</div></div><p>Central Cee</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Dave.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Santan Dave</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Lil Maina.jpeg" alt="Artist"><div class="play-btn">▶</div></div><p>Lil Maina</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Dababy.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Dababy</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Tems.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Tems</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Kidwild.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>KidWild</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Tkandz.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Tkandz</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Russ.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Russ Millions</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Digga.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Digga D</p></div>
+          <div class="artist-card" onclick="togglePlay(this)"><div class="img-container"><img src="Assets/Booty.jpg" alt="Artist"><div class="play-btn">▶</div></div><p>Boutross</p></div>
+        </div>
+      </section>
+
+      <!-- =============================== -->
+      <!-- TRENDING SONGS SECTION -->
+      <!-- =============================== -->
+      <section class="trending-section">
+        <div class="section-header"><h2>Trending songs</h2><button class="see-all">Show all</button></div>
+        <div class="trending-row">
+          <!-- Each song card calls playTrending() with title and artist -->
+          <div class="song-card" onclick="playTrending('Finale', 'Bien')"><div class="album-wrapper"><img src="Assets/Finale.png"><div class="play-overlay">▶</div></div><h4>Finale</h4><p>Bien, Alikiba</p></div>
+          <div class="song-card" onclick="playTrending('Chai ya saa kumi', 'Ywaya Tajiri')"><div class="album-wrapper"><img src="Assets/Chai ya saakumi.jpg"><div class="play-overlay">▶</div></div><h4>Chai ya saa kumi</h4><p>Ywaya Tajiri</p></div>
+          <div class="song-card" onclick="playTrending('Taya', 'Okello Max')"><div class="album-wrapper"><img src="Assets/Tya.jpg"><div class="play-overlay">▶</div></div><h4>Taya</h4><p>Okello Max</p></div>
+          <div class="song-card" onclick="playTrending('Wewe ni wangu', '2wentysixx')"><div class="album-wrapper"><img src="Assets/wewe.jpg"><div class="play-overlay">▶</div></div><h4>Wewe ni wangu</h4><p>2wentysixx</p></div>
+          <div class="song-card" onclick="playTrending('Donjo Maber', 'Iyanii')"><div class="album-wrapper"><img src="Assets/donjo.jpg"><div class="play-overlay">▶</div></div><h4>Donjo Maber</h4><p>Iyanii, Dufla</p></div>
+          <div class="song-card" onclick="playTrending('ZEP', 'Dj Smallz')"><div class="album-wrapper"><img src="Assets/Zep.jpg"><div class="play-overlay">▶</div></div><h4>ZEP</h4><p>Dj Smallz</p></div>
+          <div class="song-card" onclick="playTrending('Desire', 'Lilmaina')"><div class="album-wrapper"><img src="Assets/desire.jpg"><div class="play-overlay">▶</div></div><h4>Desire</h4><p>Lilmaina, Nikita Kering'</p></div>
+          <div class="song-card" onclick="playTrending('Mimi Na Wewe', 'Bridget Blue')"><div class="album-wrapper"><img src="Assets/Nikita.jpg"><div class="play-overlay">▶</div></div><h4>Mimi Na Wewe</h4><p>Bridget Blue, Nikita Kering'</p></div>
+          <div class="song-card" onclick="playTrending('LA PLI SI TOL', 'Mikado')"><div class="album-wrapper"><img src="Assets/Lapilo.jpg"><div class="play-overlay">▶</div></div><h4>LA PLI SI TOL</h4><p>Mikado</p></div>
+          <div class="song-card" onclick="playTrending('Siaka', 'Mejja')"><div class="album-wrapper"><img src="Assets/Siaka.jpg"><div class="play-overlay">▶</div></div><h4>Siaka</h4><p>Mejja, Fik Fameica</p></div>
+        </div>
+      </section>
+
+      <!-- =============================== -->
+      <!-- POPULAR RADIO SECTION -->
+      <!-- =============================== -->
+      <section class="radio-section">
+        <div class="section-header"><h2>Popular radio</h2><button class="see-all">Show all</button></div>
+        <div class="radio-row">
+          <div class="radio-item"><div class="radio-card" style="background-color:#c0392b;"><img src="Assets/Burna.png" class="radio-artwork"></div><div class="radio-info"><h3>Burna Boy</h3><p>With J Hus, Shallipopi...</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#FF6F61;"><img src="Assets/Chris Brown.png" class="radio-artwork"></div><div class="radio-info"><h3>Chris Brown</h3><p>With Ella Mai, Kid Ink...</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#7FFFD4;"><img src="Assets/Wakadinali.png" class="radio-artwork"></div><div class="radio-info"><h3>Wakadinali</h3><p>With Dyana Cods, Buruklyn...</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#F08CD3;"><img src="Assets/Nikita.png" class="radio-artwork"></div><div class="radio-info"><h3>Nikita Kering'</h3><p>With Bridget Blue, Karun...</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#F08CD3;"><img src="Assets/Drake.png" class="radio-artwork"></div><div class="radio-info"><h3>Drake</h3><p>by SoundWave</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#C792EA;"><img src="Assets/Njeare.png" class="radio-artwork"></div><div class="radio-info"><h3>Njerae</h3><p>With Bridget Blue, Nikita...</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#7BAFD4;"><img src="Assets/21 sav.png" class="radio-artwork"></div><div class="radio-info"><h3>21 Savage</h3><p>With Drake, Kodak Black...</p></div></div>
+          <div class="radio-item"><div class="radio-card" style="background-color:#98EEB0;"><img src="Assets/Nyash.png" class="radio-artwork"></div><div class="radio-info"><h3>Nyashinski</h3><p>With Savara, Chris Kaiga...</p></div></div>
+          <div class="radio-item"><div class="radio-card glass-purple"><img src="Assets/Sauti Sol.png" class="radio-artwork"></div><div class="radio-info"><h3>Sauti Sol</h3><p>With Bridget Blue, Charisma...</p></div></div>
+          <div class="radio-item"><div class="radio-card glass-orange"><img src="Assets/Toxic.png" class="radio-artwork"></div><div class="radio-info"><h3>Toxic Lyrikali</h3><p>With MASTAR VK, Dyana Cods...</p></div></div>
+        </div>
+      </section>
+
+      <!-- =============================== -->
+      <!-- HOT ALBUMS SECTION -->
+      <!-- =============================== -->
+      <section class="trending-section">
+        <div class="section-header"><h2>Hot Albums</h2><button class="see-all">SEE ALL</button></div>
+        <div class="trending-row">
+          <!-- Album cards call albumSearch() to get all tracks of that album -->
+          <div class="song-card" onclick="albumSearch('Ndani Ya Cockpit 2', 'Wakadinali')"><div class="album-wrapper"><img src="Assets/NYC2.png"><div class="play-overlay">▶</div></div><h4>Ndani Ya Cockpit 2</h4><p>Wakadinali</p></div>
+          <div class="song-card" onclick="albumSearch('East Mpaka London', 'Buruklyn Boyz')"><div class="album-wrapper"><img src="Assets/burualbum.png"><div class="play-overlay">▶</div></div><h4>East Mpaka London</h4><p>Buruklyn Boyz</p></div>
+          <div class="song-card" onclick="albumSearch('Victims Of Madness', 'Wakadinali')"><div class="album-wrapper"><img src="Assets/VOM.png"><div class="play-overlay">▶</div></div><h4>Victims Of Madness</h4><p>Wakadinali</p></div>
+          <div class="song-card" onclick="albumSearch('Bboy Settingz', 'Buruklyn Boyz')"><div class="album-wrapper"><img src="Assets/BBS .png"><div class="play-overlay">▶</div></div><h4>B.Boyz Setting</h4><p>Buruklyn Boyz</p></div>
+          <div class="song-card" onclick="albumSearch('58 Flava', 'Buruklyn Boyz')"><div class="album-wrapper"><img src="Assets/58 Album.png"><div class="play-overlay">▶</div></div><h4>58 Flava</h4><p>Buruklyn Boyz</p></div>
+          <div class="song-card" onclick="albumSearch('Victims Of Madness 2', 'Wakadinali')"><div class="album-wrapper"><img src="Assets/VOM2.png"><div class="play-overlay">▶</div></div><h4>Victims Of Madness 2</h4><p>Wakadinali</p></div>
+          <div class="song-card" onclick="albumSearch('The Romantic', 'Bruno Mars')"><div class="album-wrapper"><img src="Assets/Bruno_Mars_-_The_Romantic.png"><div class="play-overlay">▶</div></div><h4>The Romantic</h4><p>Bruno Mars</p></div>
+        </div>
+      </section>
+
+      <!-- =============================== -->
+      <!-- PLAYLISTS SECTION (CRUD UI) -->
+      <!-- =============================== -->
+      <section id="playlistsSection" class="trending-section">
+        <div class="section-header">
+          <h2>Your Playlists</h2>
+          <div>
+            <!-- Refresh button: calls fetchPlaylists() (GET) -->
+            <button class="see-all" onclick="fetchPlaylists()">⟳ Refresh</button>
+            <!-- Close button: hides the whole playlists section -->
+            <button class="see-all" onclick="togglePlaylistsSection()">Close</button>
           </div>
-          <div class="artist-row">
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Toxic Lyrikali.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Toxic Lyrikali</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/LilGithu.png" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Lil Githu</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Buruklyn.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Buruklyn Boyz</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Only.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Only Moh</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Mauru.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Mauru Gwash</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Jones.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Khaligraph Jones</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Wakadinali.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Wakadinali</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Central-Cee.png" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Central Cee</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Dave.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Santan Dave</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Lil Maina.jpeg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Lil Maina</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Dababy.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Dababy</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Tems.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Tems</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Kidwild.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>KidWild</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Tkandz.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Tkandz</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Russ.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Russ Millions</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Digga.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Digga D</p>
-            </div>
-            <div class="artist-card" onclick="togglePlay(this)">
-              <div class="img-container">
-                <img src="Assets/Booty.jpg" alt="Artist">
-                <div class="play-btn">▶</div>
-              </div>
-              <p>Boutross</p>
-            </div>
-          </div>
-        </section>
+        </div>
+        <!-- Container where playlists are dynamically inserted -->
+        <div id="playlistsContainer" style="margin-top: 15px;"></div>
+      </section>
 
-                <section class="trending-section">
-  <div class="section-header">
-    <h2>Trending songs</h2>
-    <button class="see-all">Show all</button>
-  </div>
-  <div class="trending-row">
-    <div class="song-card" onclick="playTrending('Finale', 'Bien')">
-      <div class="album-wrapper">
-        <img src="Assets/Finale.png" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Finale</h4>
-      <p>Bien, Alikiba</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Chai ya saa kumi', 'Ywaya Tajiri')">
-      <div class="album-wrapper">
-        <img src="Assets/Chai ya saakumi.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Chai ya saa kumi</h4>
-      <p>Ywaya Tajiri</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Taya', 'Okello Max')">
-      <div class="album-wrapper">
-        <img src="Assets/Tya.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Taya</h4>
-      <p>Okello Max</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Wewe ni wangu', '2wentysixx')">
-      <div class="album-wrapper">
-        <img src="Assets/wewe.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Wewe ni wangu</h4>
-      <p>2wentysixx</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Donjo Maber', 'Iyanii')">
-      <div class="album-wrapper">
-        <img src="Assets/donjo.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Donjo Maber</h4>
-      <p>Iyanii, Dufla</p>
-    </div>
-    <div class="song-card" onclick="playTrending('ZEP', 'Dj Smallz')">
-      <div class="album-wrapper">
-        <img src="Assets/Zep.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>ZEP (feat. Uncool MC)</h4>
-      <p>Dj Smallz, ZinedinexSguche</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Desire', 'Lilmaina')">
-      <div class="album-wrapper">
-        <img src="Assets/desire.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Desire</h4>
-      <p>Lilmaina, Nikita Kering'</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Mimi Na Wewe', 'Bridget Blue')">
-      <div class="album-wrapper">
-        <img src="Assets/Nikita.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Mimi Na Wewe</h4>
-      <p>Bridget Blue, Nikita Kering'</p>
-    </div>
-    <div class="song-card" onclick="playTrending('LA PLI SI TOL', 'Mikado')">
-      <div class="album-wrapper">
-        <img src="Assets/Lapilo.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>LA PLI SI TOL</h4>
-      <p>Mikado</p>
-    </div>
-    <div class="song-card" onclick="playTrending('Siaka', 'Mejja')">
-      <div class="album-wrapper">
-        <img src="Assets/Siaka.jpg" alt="Song Cover">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Siaka</h4>
-      <p>Mejja, Fik Fameica</p>
-    </div>
-  </div>
-</section>
+      <!-- =============================== -->
+      <!-- LIKED SONGS SECTION (hidden by default) -->
+      <!-- =============================== -->
+      <section id="likedSongsSection" class="trending-section" style="display: none;">
+        <div class="section-header">
+          <h2>❤️ Liked Songs</h2>
+          <button class="see-all" onclick="fetchLikedSongs()">⟳ Refresh</button>
+          <button class="see-all" onclick="hideLikedSongs()">Close</button>
+        </div>
+        <div id="likedSongsContainer" style="margin-top: 15px;"></div>
+      </section>
 
-
-                <section class="radio-section">
-  <div class="section-header">
-    <h2>Popular radio</h2>
-    <button class="see-all">Show all</button>
-  </div>
-
-  <div class="radio-row">
-    
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #c0392b;">
-    <img src="Assets/Burna.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Burna Boy</h3>
-    <p>With J Hus, Shallipopi,
-Wande Coal and more</p>
+      <!-- =============================== -->
+      <!-- FOOTER -->
+      <!-- =============================== -->
+      <footer class="site-footer">
+        <hr class="footer-line">
+        <div class="footer-top"><div class="footer-columns"><div class="footer-column"><h4>Company</h4><a href="#">About</a><a href="#">Jobs</a><a href="#">For the Record</a></div><div class="footer-column"><h4>Communities</h4><a href="#">For Artists</a><a href="#">Developers</a><a href="#">Advertising</a><a href="#">Investors</a><a href="#">Vendors</a></div><div class="footer-column"><h4>Useful links</h4><a href="#">Support</a><a href="#">Free Mobile App</a></div><div class="footer-column"><h4>SoundWave Plans</h4><a href="#">Premium Individual</a><a href="#">Premium Family</a><a href="#">SoundWave Free</a></div></div><div class="footer-socials"><div class="social-icon"><i class="fa-brands fa-instagram"></i></div><div class="social-icon"><i class="fa-brands fa-twitter"></i></div><div class="social-icon"><i class="fa-brands fa-facebook"></i></div></div></div>
+        <hr class="footer-line">
+        <div class="footer-bottom"><div class="legal-links"><a href="#">Legal</a><a href="#">Safety & Privacy Center</a><a href="#">Privacy Policy</a><a href="#">Cookies</a><a href="#">About Ads</a><a href="#">Accessibility</a></div><div class="copyright"><span>© 2026 SoundWave AB</span></div></div>
+      </footer>
+    </main>
   </div>
 </div>
 
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #FF6F61;">
-    <img src="Assets/Chris Brown.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Chris Brown</h3>
-    <p>With Ella Mai, Kid Ink,
-Bow Wow and more</p>
-  </div>
-</div>
-
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #7FFFD4;">
-    <img src="Assets/Wakadinali.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Wakadinali</h3>
-    <p>With Dyana Cods, Buruklyn Boyz, and more</p>
-  </div>
-</div>
-
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #F08CD3;">
-    <img src="Assets/Nikita.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Nikita Kering'</h3>
-    <p>With Bridget Blue, Karun, and more</p>
-  </div>
-</div>
-
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #F08CD3;">
-    <img src="Assets/Drake.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Drake</h3>
-    <p>by SoundWave</p>
-  </div>
-</div>
-
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #C792EA;">
-    <img src="Assets/Njeare.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Njerae</h3>
-    <p>With Bridget Blue, Nikita
-Kering', Charisma and ...</p>
-  </div>
-</div>
-
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #7BAFD4;">
-    <img src="Assets/21 sav.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>21 Savage</h3>
-    <p>With Drake, Kodak Black,
-Metro Boomin and more</p>
-  </div>
-</div>
-
-
-<div class="radio-item">
-  <div class="radio-card" style="background-color: #98EEB0;">
-    <img src="Assets/Nyash.png" class="radio-artwork">
-  </div>
-  <div class="radio-info">
-    <h3>Nyashinski</h3>
-    <p>With Savara, Chris Kaiga,
-Naiboi and more</p>
-  </div>
-</div>
-
-    
-    <div class="radio-item">
-      <div class="radio-card glass-purple">
-        <img src="Assets/Sauti Sol.png" class="radio-artwork" alt="Sauti Sol Mix">
-      </div>
-      <div class="radio-info">
-        <h3>Sauti Sol</h3>
-        <p>With Bridget Blue, Charisma, Matata and more</p>
-      </div>
-    </div>
-
-    <!-- Radio Item 2 -->
-    <div class="radio-item">
-      <div class="radio-card glass-orange">
-        <img src="Assets/Toxic.png" class="radio-artwork" alt="Toxic Mix">
-      </div>
-      <div class="radio-info">
-        <h3>Toxic Lyrikali</h3>
-        <p>With MASTAR VK, Dyana Cods, OnlyMoh and more</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-        <section class="trending-section">
-  <div class="section-header">
-    <h2>Hot Albums</h2>
-    <button class="see-all">SEE ALL</button>
-  </div>
-  <div class="trending-row">
-    <!-- Album 1 -->
-    <div class="song-card" onclick="albumSearch('Ndani Ya Cockpit 2', 'Wakadinali')">
-      <div class="album-wrapper">
-        <img src="Assets/NYC2.png" alt="NYC2">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Ndani Ya Cockpit 2</h4>
-      <p>Wakadinali</p>
-    </div>
-
-    <!-- Album 2 -->
-    <div class="song-card" onclick="albumSearch('East Mpaka London', 'Buruklyn Boyz')">
-      <div class="album-wrapper">
-        <img src="Assets/burualbum.png" alt="East Mpaka London">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>East Mpaka London</h4>
-      <p>Buruklyn Boyz</p>
-    </div>
-
-    <!-- Album 3 -->
-    <div class="song-card" onclick="albumSearch('Victims Of Madness', 'Wakadinali')">
-      <div class="album-wrapper">
-        <img src="Assets/VOM.png" alt="Victims Of Madness">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Victims Of Madness</h4>
-      <p>Wakadinali</p>
-    </div>
-
-    <!-- Album 4 -->
-    <div class="song-card" onclick="albumSearch('Bboy Settingz', 'Buruklyn Boyz')">
-      <div class="album-wrapper">
-        <img src="Assets/BBS .png" alt="B.Boyz Setting">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>B.Boyz Setting</h4>
-      <p>Buruklyn Boyz</p>
-    </div>
-
-    <!-- Album 5 -->
-    <div class="song-card" onclick="albumSearch('58 Flava', 'Buruklyn Boyz')">
-      <div class="album-wrapper">
-        <img src="Assets/58 Album.png" alt="58 Flava">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>58 Flava</h4>
-      <p>Buruklyn Boyz</p>
-    </div>
-
-    <!-- Album 6 -->
-    <div class="song-card" onclick="albumSearch('Victims Of Madness 2', 'Wakadinali')">
-      <div class="album-wrapper">
-        <img src="Assets/VOM2.png" alt="Victims Of Madness 2">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>Victims Of Madness 2</h4>
-      <p>Wakadinali</p>
-    </div>
-
-    <!-- Album 7 -->
-    <div class="song-card" onclick="albumSearch('The Romantic', 'Bruno Mars')">
-      <div class="album-wrapper">
-        <img src="Assets/Bruno_Mars_-_The_Romantic.png" alt="The Romantic">
-        <div class="play-overlay">▶</div>
-      </div>
-      <h4>The Romantic</h4>
-      <p>Bruno Mars</p>
-    </div>
-  </div>
-</section>
-
-
-
-        <!-- FOOTER START -->
-        <footer class="site-footer">
-          <hr class="footer-line">
-          
-          <div class="footer-top">
-            <div class="footer-columns">
-              <div class="footer-column">
-                <h4>Company</h4>
-                <a href="#">About</a>
-                <a href="#">Jobs</a>
-                <a href="#">For the Record</a>
-              </div>
-              <div class="footer-column">
-                <h4>Communities</h4>
-                <a href="#">For Artists</a>
-                <a href="#">Developers</a>
-                <a href="#">Advertising</a>
-                <a href="#">Investors</a>
-                <a href="#">Vendors</a>
-              </div>
-              <div class="footer-column">
-                <h4>Useful links</h4>
-                <a href="#">Support</a>
-                <a href="#">Free Mobile App</a>
-              </div>
-              <div class="footer-column">
-                <h4>SoundWave Plans</h4>
-                <a href="#">Premium Individual</a>
-                <a href="#">Premium Family</a>
-                <a href="#">SoundWave Free</a>
-              </div>
-            </div>
-
-            <div class="footer-socials">
-              <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
-              <div class="social-icon"><i class="fa-brands fa-twitter"></i></div>
-              <div class="social-icon"><i class="fa-brands fa-facebook"></i></div>
-            </div>
-          </div>
-
-          <hr class="footer-line">
-
-          <div class="footer-bottom">
-            <div class="legal-links">
-              <a href="#">Legal</a>
-              <a href="#">Safety & Privacy Center</a>
-              <a href="#">Privacy Policy</a>
-              <a href="#">Cookies</a>
-              <a href="#">About Ads</a>
-              <a href="#">Accessibility</a>
-            </div>
-            <div class="copyright">
-              <span>© 2026 SoundWave AB</span>
-            </div>
-          </div>
-        </footer>
-        <!-- FOOTER END -->
-      </main>
-    </div>
-  </div>
-  
-    
-    <div id="player-bar" class="player-footer" style="display: none; position: fixed; bottom: 0; width: 100%; background: #121212; padding: 10px 20px; align-items: center; justify-content: space-between; border-top: 1px solid #282828; z-index: 1000;">
-
+<!-- =============================== -->
+<!-- PLAYER BAR (fixed at bottom)   -->
+<!-- =============================== -->
+<div id="player-bar" class="player-footer" style="display: none; position: fixed; bottom: 0; width: 100%; background: #121212; padding: 10px 20px; align-items: center; justify-content: space-between; border-top: 1px solid #282828; z-index: 1000;">
+  <!-- Current track info -->
   <div class="current-track" style="display: flex; align-items: center; gap: 15px; width: 30%;">
     <img id="p-img" src="" alt="cover" style="width: 56px; height: 56px; border-radius: 4px;">
-    <div>
-      <h4 id="p-title" style="margin: 0; font-size: 14px; color: white;">Song Title</h4>
-      <p id="p-artist" style="margin: 0; font-size: 12px; color: #b3b3b3;">Artist</p>
-    </div>
+    <div><h4 id="p-title" style="margin: 0; font-size: 14px; color: white;">Song Title</h4><p id="p-artist" style="margin: 0; font-size: 12px; color: #b3b3b3;">Artist</p></div>
   </div>
-
+  <!-- Playback controls -->
   <div style="display: flex; align-items: center; gap: 25px; font-size: 20px; color: #b3b3b3;">
     <i class="fa-solid fa-shuffle"></i>
     <i class="fa-solid fa-backward-step"></i>
+    <!-- Master play/pause button -->
     <i class="fa-solid fa-circle-play" id="masterPlay" style="font-size: 35px; color: white; cursor: pointer;"></i>
     <i class="fa-solid fa-forward-step"></i>
+    <!-- Repeat button toggles loop -->
     <i class="fa-solid fa-repeat" id="repeatBtn" style="cursor: pointer;"></i>
+    <!-- Like button: calls likeCurrentSong() (POST to likedSongs) -->
+    <i class="fa-solid fa-heart" id="likeBtn" style="cursor: pointer; font-size: 22px;"></i>
   </div>
-
+  <!-- Volume control -->
   <div style="display: flex; align-items: center; gap: 10px; width: 30%; justify-content: flex-end; color: #b3b3b3;">
     <i class="fa-solid fa-volume-high"></i>
     <input type="range" id="volumeSlider" min="0" max="100" value="100" style="width: 100px;">
   </div>
-
 </div>
 
+<!-- Link to external JavaScript file containing all logic (search, play, CRUD) -->
 <script src="script.js"></script>
-
 </body>
 </html>

@@ -1,0 +1,186 @@
+{
+  "playlists": [
+    {
+      "name": "Githu",
+      "songs": [],
+      "id": "IzTbhejpTbo"
+    },
+    {
+      "name": "githu",
+      "songs": [],
+      "id": "lNoW9R6hfLk"
+    },
+    {
+      "name": "Githu ",
+      "songs": [],
+      "id": "33Eipf-3aVA"
+    }
+  ],
+  "likedSongs": [
+    {
+      "id": "fZaHC0Sd8uU",
+      "readable": true,
+      "title": "Chai ya saa kumi",
+      "title_short": "Chai ya saa kumi",
+      "title_version": "",
+      "isrc": "QZMEP2658919",
+      "link": "https://www.deezer.com/track/3861757171",
+      "duration": 240,
+      "rank": 73222,
+      "explicit_lyrics": false,
+      "explicit_content_lyrics": 0,
+      "explicit_content_cover": 2,
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/6/b/e/0/6be9594a77226361d35e7adc97a855ba.mp3?hdnea=exp=1776318134~acl=/api/1/1/6/b/e/0/6be9594a77226361d35e7adc97a855ba.mp3*~data=user_id=0,application_id=42~hmac=f55501528fa7b4f69a7b3cab38cf2ce21e2184787903c60f866cabc22e73dbda",
+      "md5_image": "a4051a6eeb928a9a075f5dc6f47cbee3",
+      "artist": {
+        "id": 145253942,
+        "name": "Ywaya Tajiri",
+        "link": "https://www.deezer.com/artist/145253942",
+        "picture": "https://api.deezer.com/artist/145253942/image",
+        "picture_small": "https://cdn-images.dzcdn.net/images/artist/a86593b39d20e2b8c9eeb63566d91bb8/56x56-000000-80-0-0.jpg",
+        "picture_medium": "https://cdn-images.dzcdn.net/images/artist/a86593b39d20e2b8c9eeb63566d91bb8/250x250-000000-80-0-0.jpg",
+        "picture_big": "https://cdn-images.dzcdn.net/images/artist/a86593b39d20e2b8c9eeb63566d91bb8/500x500-000000-80-0-0.jpg",
+        "picture_xl": "https://cdn-images.dzcdn.net/images/artist/a86593b39d20e2b8c9eeb63566d91bb8/1000x1000-000000-80-0-0.jpg",
+        "tracklist": "https://api.deezer.com/artist/145253942/top?limit=50",
+        "type": "artist"
+      },
+      "album": {
+        "id": 925364581,
+        "title": "Chai ya saa kumi",
+        "cover": "https://api.deezer.com/album/925364581/image",
+        "cover_small": "https://cdn-images.dzcdn.net/images/cover/a4051a6eeb928a9a075f5dc6f47cbee3/56x56-000000-80-0-0.jpg",
+        "cover_medium": "https://cdn-images.dzcdn.net/images/cover/a4051a6eeb928a9a075f5dc6f47cbee3/250x250-000000-80-0-0.jpg",
+        "cover_big": "https://cdn-images.dzcdn.net/images/cover/a4051a6eeb928a9a075f5dc6f47cbee3/500x500-000000-80-0-0.jpg",
+        "cover_xl": "https://cdn-images.dzcdn.net/images/cover/a4051a6eeb928a9a075f5dc6f47cbee3/1000x1000-000000-80-0-0.jpg",
+        "md5_image": "a4051a6eeb928a9a075f5dc6f47cbee3",
+        "tracklist": "https://api.deezer.com/album/925364581/tracks",
+        "type": "album"
+      },
+      "type": "track"
+    },
+    {
+      "id": "hcOtMzeYx5M",
+      "readable": true,
+      "title": "Trap",
+      "title_short": "Trap",
+      "title_version": "",
+      "isrc": "QZZ772518237",
+      "link": "https://www.deezer.com/track/3512669051",
+      "duration": 158,
+      "rank": 68789,
+      "explicit_lyrics": true,
+      "explicit_content_lyrics": 1,
+      "explicit_content_cover": 2,
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/b/7/2/0/b72d141e1941bfbdb451227c72275690.mp3?hdnea=exp=1776319619~acl=/api/1/1/b/7/2/0/b72d141e1941bfbdb451227c72275690.mp3*~data=user_id=0,application_id=42~hmac=ac280c99ec8e3163275e5769f956e75f8d59bfbf35537c0d673e4b93aa348ef1",
+      "md5_image": "2a9525e9b1afcddb035bc046d5bcf442",
+      "artist": {
+        "id": 272526452,
+        "name": "OnlyMoh",
+        "link": "https://www.deezer.com/artist/272526452",
+        "picture": "https://api.deezer.com/artist/272526452/image",
+        "picture_small": "https://cdn-images.dzcdn.net/images/artist/9d933741725c4de3e35ba8c309fc32d7/56x56-000000-80-0-0.jpg",
+        "picture_medium": "https://cdn-images.dzcdn.net/images/artist/9d933741725c4de3e35ba8c309fc32d7/250x250-000000-80-0-0.jpg",
+        "picture_big": "https://cdn-images.dzcdn.net/images/artist/9d933741725c4de3e35ba8c309fc32d7/500x500-000000-80-0-0.jpg",
+        "picture_xl": "https://cdn-images.dzcdn.net/images/artist/9d933741725c4de3e35ba8c309fc32d7/1000x1000-000000-80-0-0.jpg",
+        "tracklist": "https://api.deezer.com/artist/272526452/top?limit=50",
+        "type": "artist"
+      },
+      "album": {
+        "id": 806361991,
+        "title": "Trap",
+        "cover": "https://api.deezer.com/album/806361991/image",
+        "cover_small": "https://cdn-images.dzcdn.net/images/cover/2a9525e9b1afcddb035bc046d5bcf442/56x56-000000-80-0-0.jpg",
+        "cover_medium": "https://cdn-images.dzcdn.net/images/cover/2a9525e9b1afcddb035bc046d5bcf442/250x250-000000-80-0-0.jpg",
+        "cover_big": "https://cdn-images.dzcdn.net/images/cover/2a9525e9b1afcddb035bc046d5bcf442/500x500-000000-80-0-0.jpg",
+        "cover_xl": "https://cdn-images.dzcdn.net/images/cover/2a9525e9b1afcddb035bc046d5bcf442/1000x1000-000000-80-0-0.jpg",
+        "md5_image": "2a9525e9b1afcddb035bc046d5bcf442",
+        "tracklist": "https://api.deezer.com/album/806361991/tracks",
+        "type": "album"
+      },
+      "type": "track"
+    },
+    {
+      "id": "E9N4NlGicZQ",
+      "readable": true,
+      "title": "Superman",
+      "title_short": "Superman",
+      "title_version": "",
+      "isrc": "ESA012298979",
+      "link": "https://www.deezer.com/track/1920730857",
+      "duration": 304,
+      "rank": 82659,
+      "explicit_lyrics": false,
+      "explicit_content_lyrics": 0,
+      "explicit_content_cover": 2,
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/2/5/3/0/2534afff2dbca0cd454008b7e989afd0.mp3?hdnea=exp=1776320246~acl=/api/1/1/2/5/3/0/2534afff2dbca0cd454008b7e989afd0.mp3*~data=user_id=0,application_id=42~hmac=767793807cc8e2180b70cdacd740b932c6811f961f346f5981c86595e4f78e2d",
+      "md5_image": "a94744cab467ad5ff3d921a8b940ecef",
+      "artist": {
+        "id": 5811671,
+        "name": "Khaligraph Jones",
+        "link": "https://www.deezer.com/artist/5811671",
+        "picture": "https://api.deezer.com/artist/5811671/image",
+        "picture_small": "https://cdn-images.dzcdn.net/images/artist/d8f476e90d1a9165a00d3b81dc2efa5c/56x56-000000-80-0-0.jpg",
+        "picture_medium": "https://cdn-images.dzcdn.net/images/artist/d8f476e90d1a9165a00d3b81dc2efa5c/250x250-000000-80-0-0.jpg",
+        "picture_big": "https://cdn-images.dzcdn.net/images/artist/d8f476e90d1a9165a00d3b81dc2efa5c/500x500-000000-80-0-0.jpg",
+        "picture_xl": "https://cdn-images.dzcdn.net/images/artist/d8f476e90d1a9165a00d3b81dc2efa5c/1000x1000-000000-80-0-0.jpg",
+        "tracklist": "https://api.deezer.com/artist/5811671/top?limit=50",
+        "type": "artist"
+      },
+      "album": {
+        "id": 357977257,
+        "title": "Mbona",
+        "cover": "https://api.deezer.com/album/357977257/image",
+        "cover_small": "https://cdn-images.dzcdn.net/images/cover/a94744cab467ad5ff3d921a8b940ecef/56x56-000000-80-0-0.jpg",
+        "cover_medium": "https://cdn-images.dzcdn.net/images/cover/a94744cab467ad5ff3d921a8b940ecef/250x250-000000-80-0-0.jpg",
+        "cover_big": "https://cdn-images.dzcdn.net/images/cover/a94744cab467ad5ff3d921a8b940ecef/500x500-000000-80-0-0.jpg",
+        "cover_xl": "https://cdn-images.dzcdn.net/images/cover/a94744cab467ad5ff3d921a8b940ecef/1000x1000-000000-80-0-0.jpg",
+        "md5_image": "a94744cab467ad5ff3d921a8b940ecef",
+        "tracklist": "https://api.deezer.com/album/357977257/tracks",
+        "type": "album"
+      },
+      "type": "track"
+    },
+    {
+      "id": "tY96zT52ZGE",
+      "readable": true,
+      "title": "Taya",
+      "title_short": "Taya",
+      "title_version": "",
+      "isrc": "TCAJV2538613",
+      "link": "https://www.deezer.com/track/3443415921",
+      "duration": 239,
+      "rank": 201557,
+      "explicit_lyrics": false,
+      "explicit_content_lyrics": 0,
+      "explicit_content_cover": 2,
+      "preview": "https://cdnt-preview.dzcdn.net/api/1/1/3/1/c/0/31cd17e4f2c076d527c40a0e0e694ad6.mp3?hdnea=exp=1776320722~acl=/api/1/1/3/1/c/0/31cd17e4f2c076d527c40a0e0e694ad6.mp3*~data=user_id=0,application_id=42~hmac=038373ba89860558b0051c030c2172858e162a6a7890867bbedfef1492854bba",
+      "md5_image": "b2b43aefd4b35d500b66271c6cab147c",
+      "artist": {
+        "id": 80921752,
+        "name": "Okello Max",
+        "link": "https://www.deezer.com/artist/80921752",
+        "picture": "https://api.deezer.com/artist/80921752/image",
+        "picture_small": "https://cdn-images.dzcdn.net/images/artist/36c4906d84372d9bbcd2417cda966361/56x56-000000-80-0-0.jpg",
+        "picture_medium": "https://cdn-images.dzcdn.net/images/artist/36c4906d84372d9bbcd2417cda966361/250x250-000000-80-0-0.jpg",
+        "picture_big": "https://cdn-images.dzcdn.net/images/artist/36c4906d84372d9bbcd2417cda966361/500x500-000000-80-0-0.jpg",
+        "picture_xl": "https://cdn-images.dzcdn.net/images/artist/36c4906d84372d9bbcd2417cda966361/1000x1000-000000-80-0-0.jpg",
+        "tracklist": "https://api.deezer.com/artist/80921752/top?limit=50",
+        "type": "artist"
+      },
+      "album": {
+        "id": 782394551,
+        "title": "Healing",
+        "cover": "https://api.deezer.com/album/782394551/image",
+        "cover_small": "https://cdn-images.dzcdn.net/images/cover/b2b43aefd4b35d500b66271c6cab147c/56x56-000000-80-0-0.jpg",
+        "cover_medium": "https://cdn-images.dzcdn.net/images/cover/b2b43aefd4b35d500b66271c6cab147c/250x250-000000-80-0-0.jpg",
+        "cover_big": "https://cdn-images.dzcdn.net/images/cover/b2b43aefd4b35d500b66271c6cab147c/500x500-000000-80-0-0.jpg",
+        "cover_xl": "https://cdn-images.dzcdn.net/images/cover/b2b43aefd4b35d500b66271c6cab147c/1000x1000-000000-80-0-0.jpg",
+        "md5_image": "b2b43aefd4b35d500b66271c6cab147c",
+        "tracklist": "https://api.deezer.com/album/782394551/tracks",
+        "type": "album"
+      },
+      "type": "track"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
